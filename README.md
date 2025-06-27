@@ -8,15 +8,15 @@ Are houses more expensive on streets with tall trees compared to those with shor
 ## Answer
 Properties with tall trees have higher average prices.
 
-Based on the data provided in data folder: 
-Average Price on Streets with Tall Trees: €587,800.39 
+Based on the data provided in data folder: <br/>
+Average Price on Streets with Tall Trees: €587,800.39 <br/>
 Average Price on Streets with Short Trees: €488,981.66 
 
 
 ## Requirements
 
 - Python 3.10+
-- Pip package manager
+- Pip package manager (come with python installation usually)
 
 ## Installation
 1. Create and activate a virtual environment (recommended but optional):
