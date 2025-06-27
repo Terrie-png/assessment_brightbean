@@ -1,4 +1,4 @@
-from utils import fetch_and_parse_tree_data, load_property_csv, combine_cateogrised_property_with_price
+from utils import fetch_and_parse_tree_data, load_property_csv, merge_tree_classification_with_properties
 import numpy as np
 import pandas as pd
 import msvcrt
@@ -6,14 +6,14 @@ import msvcrt
 def display_average_prices(properties: pd.DataFrame):
     
     print("Support Evidence: ")
-    if (properties["IsTreeTall"] == 1).any():
-        tall_avg = np.round(properties[properties["IsTreeTall"] == 1]["Price"].mean(), 2)
+    if (properties["hasTallTree"] == 1).any():
+        tall_avg = np.round(properties[properties["hasTallTree"] == 1]["Price"].mean(), 2)
         print(f"Average Price on Streets with Tall Trees: €{tall_avg:,} \n")
     else:
         print("No properties found on streets with tall trees.")
 
-    if (properties["IsTreeShort"] == 1).any():
-        short_avg = np.round(properties[properties["IsTreeShort"] == 1]["Price"].mean(), 2)
+    if (properties["hasShortTree"] == 1).any():
+        short_avg = np.round(properties[properties["hasShortTree"] == 1]["Price"].mean(), 2)
         print(f"Average Price on Streets with Short Trees: €{short_avg:,} \n")
     else:
         print("No properties found on streets with short trees.")
@@ -38,13 +38,13 @@ if __name__ == "__main__":
     properties = load_property_csv("data/dublin-property.csv")
 
     # Step 3: Combine data
-    combined_properties = combine_cateogrised_property_with_price(properties, categorisedStreetNames)
+    combined_properties = merge_tree_classification_with_properties(properties, categorisedStreetNames)
 
     # Step 4: Validate if any street is ambiguously categorized
-    mask = combined_properties['IsTreeTall'] == combined_properties['IsTreeShort']
-    if mask.any():
+    masked_ambiguous_properties= combined_properties['hasTallTree'] == combined_properties['hasShortTree']
+    if masked_ambiguous_properties.any():
         print("WARNING: Some streets are categorized as both Tall and Short.")
-        print(combined_properties[mask][["Street Name", "IsTreeTall", "IsTreeShort"]])
+        print(combined_properties[masked_ambiguous_properties][["Street Name", "hasTallTree", "hasShortTree"]])
 
 
     # Step 5: Display average prices
