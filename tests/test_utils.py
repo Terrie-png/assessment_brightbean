@@ -1,10 +1,9 @@
 import unittest
 import pandas as pd
-import numpy as np
 from utils import (
     parse_price,
-    extract_street_name,
-    combine_cateogrised_property_with_price
+    extract_street_names_from_subtree,
+    merge_tree_classification_with_properties
 )
 
 class TestUtils(unittest.TestCase):
@@ -36,7 +35,7 @@ class TestUtils(unittest.TestCase):
             }
         }
         expected = ["street A", "street B", "street C"]
-        result = extract_street_name(sample_tree_data)
+        result = extract_street_names_from_subtree(sample_tree_data)
         self.assertCountEqual(result, expected)
 
     # testing on combining the identification of short or tall into the data list
@@ -49,14 +48,14 @@ class TestUtils(unittest.TestCase):
             "tall": ["Street A", "Street C"],
             "short": ["Street B"]
         }
-        result = combine_cateogrised_property_with_price(properties, categorized_streets)
+        result = merge_tree_classification_with_properties(properties, categorized_streets)
 
-        self.assertIn("IsTreeTall", result.columns)
-        self.assertIn("IsTreeShort", result.columns)
-        self.assertEqual(result.loc[result["Street Name"] == "Street A", "IsTreeTall"].iloc[0], 1)
-        self.assertEqual(result.loc[result["Street Name"] == "Street B", "IsTreeShort"].iloc[0], 1)
-        self.assertEqual(result.loc[result["Street Name"] == "Street B", "IsTreeTall"].iloc[0], 0)
-        self.assertEqual(result.loc[result["Street Name"] == "Street C", "IsTreeShort"].iloc[0], 0)
+        self.assertIn("hasTallTree", result.columns)
+        self.assertIn("hasShortTree", result.columns)
+        self.assertEqual(result.loc[result["Street Name"] == "Street A", "hasTallTree"].iloc[0], 1)
+        self.assertEqual(result.loc[result["Street Name"] == "Street B", "hasShortTree"].iloc[0], 1)
+        self.assertEqual(result.loc[result["Street Name"] == "Street B", "hasTallTree"].iloc[0], 0)
+        self.assertEqual(result.loc[result["Street Name"] == "Street C", "hasShortTree"].iloc[0], 0)
 
 
 if __name__ == "__main__":
