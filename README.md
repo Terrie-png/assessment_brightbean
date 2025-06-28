@@ -46,11 +46,13 @@ The following packages are required (automatically installed via requirements.tx
 
 ## Running the program to view the result
 1. After downloading the project open a terminal in the project
-2. Execute the main script:
+2. Make sure the terminal is within the project
+3. Execute the main script:
    ```bash
    python main.py
    ```
    or (just incase some installation is different)
+
    ```bash
    py main.py
    ```
